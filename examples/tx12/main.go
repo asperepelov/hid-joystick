@@ -259,7 +259,7 @@ func btn(v bool) string {
 }
 
 func render(s JoystickState, name string) {
-	const axisMax uint16 = 0xFF07
+	const axisMax uint16 = 2047
 
 	fmt.Print("\033[H")
 	fmt.Println("╔══════════════════════════════════════════════════════════════╗")
