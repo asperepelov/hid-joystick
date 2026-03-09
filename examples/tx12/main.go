@@ -14,7 +14,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/asperepelov/hid-joystick"
 	"github.com/asperepelov/hid-joystick/hidjoystick"
 )
 
