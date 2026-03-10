@@ -8,16 +8,17 @@ tx12 - Go-пакет конкретная реализация для RadioMaste
 
 ```
 hid-joystick/
-├── hidjoystick/          # пакет: Windows HID API, Report, Controller
+├── hidjoystick/                # пакет: Windows HID API, Report, Controller
 │   ├── hid.go
 │   ├── report.go
 │   └── controller.go
-├── tx12/                 # пакет: Работа с RadioMaster TX12
+├── tx12/                       # пакет: Работа с RadioMaster TX12
 │   └── tx12.go
 ├── examples/
-│   └── tx12/             # примеры: RadioMaster TX12
-│       ├── tx12_monitor.go
-│       └── tx12_simple.go
+│   ├── tx12/                   # примеры
+│   │   ├── tx12_monitor.go     # работа с tx12, монитор RadioMaster TX12
+│   │   └── tx12_simple.go      # работа с tx12, простой пример
+│   └── gamepad.go              # работа с hidjoystick чтение USB Gamepad
 ├── go.mod
 └── README.md
 ```
@@ -73,4 +74,11 @@ r.BitU16(offset, bit)      bool   // бит в uint16 LE
 ```
 cd examples\tx12
 go run .\tx12_monitor.go
+```
+
+## Пример: Чтение USB Gamepad
+
+```
+cd examples
+go run .\gamepad.go
 ```
