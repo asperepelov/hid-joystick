@@ -65,11 +65,11 @@ func (s SwitchPos) String() string {
 // State — состояние всех органов управления TX12.
 // Значения каналов — сырые uint16 из HID-репорта без нормализации.
 type State struct {
-	CH1  uint16 // Roll     (правый стик, горизонталь)
-	CH2  uint16 // Pitch    (правый стик, вертикаль)
-	CH3  uint16 // Throttle (левый стик, вертикаль)
-	CH4  uint16 // Yaw      (левый стик, горизонталь)
-	CH5  uint16 // сырое значение переключателя
+	CH1  uint16 // Обычно Roll (правый стик, горизонталь)
+	CH2  uint16 // Обычно Pitch (правый стик, вертикаль)
+	CH3  uint16 // Обычно Throttle (левый стик, вертикаль)
+	CH4  uint16 // Обычно Yaw (левый стик, горизонталь)
+	CH5  uint16
 	CH6  uint16
 	CH7  uint16
 	CH8  uint16
@@ -78,15 +78,15 @@ type State struct {
 	CH11 uint16
 	CH12 uint16
 
-	Btn1 bool // SA
-	Btn2 bool // SD
-	Btn3 bool // S1
-	Btn4 bool // S2
+	Btn1 bool // Buttons offset 0
+	Btn2 bool // Buttons offset 1
+	Btn3 bool // Buttons offset 2
+	Btn4 bool // Buttons offset 3
 
 	SW5 SwitchPos // CH5 интерпретирован как 3-поз переключатель
-	SW6 SwitchPos
-	SW7 SwitchPos
-	SW8 SwitchPos
+	SW6 SwitchPos // CH6 интерпретирован как 3-поз переключатель
+	SW7 SwitchPos // CH7 интерпретирован как 3-поз переключатель
+	SW8 SwitchPos // CH8 интерпретирован как 3-поз переключатель
 
 	Raw []byte // сырые байты репорта
 }

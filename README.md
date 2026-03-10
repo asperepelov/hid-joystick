@@ -1,8 +1,9 @@
 # hid-joystick
 
-Go-пакет для чтения сырых HID-репортов от любого джойстика, подключённого по USB.  
+hidjoystick - Go-пакет для чтения сырых HID-репортов от любого джойстика, подключённого по USB.  
 Не привязан к конкретной модели устройства — всю интерпретацию байтов вы делаете сами.
 
+tx12 - Go-пакет конкретная реализация для RadioMaster TX12 на базе hidjoystick
 ## Структура проекта
 
 ```
@@ -11,9 +12,12 @@ hid-joystick/
 │   ├── hid.go
 │   ├── report.go
 │   └── controller.go
+├── tx12/                 # пакет: Работа с RadioMaster TX12
+│   └── tx12.go
 ├── examples/
-│   └── tx12/             # пример: RadioMaster TX12
-│       └── main.go
+│   └── tx12/             # примеры: RadioMaster TX12
+│       ├── tx12_monitor.go
+│       └── tx12_simple.go
 ├── go.mod
 └── README.md
 ```
@@ -26,23 +30,9 @@ hid-joystick/
 
 ## Быстрый старт
 
-```go
-import "github.com/yourname/hid-joystick/hidjoystick"
-
-keywords := []string{"RadioMaster", "TX12"}
-
-ctrl, err := hidjoystick.WaitForDevice(keywords, time.Second)
-if err != nil {
-    log.Fatal(err)
-}
-defer ctrl.Close()
-
-ctrl.Start()
-
-for r := range ctrl.Reports() {
-    v := r.U16LE(4) // прочитать uint16 по офсету 4
-    fmt.Println(v)
-}
+```
+cd examples\tx12
+go run .\tx12_simple.go
 ```
 
 ## API пакета `hidjoystick`
@@ -78,12 +68,9 @@ r.Bit(offset, bit)         bool   // бит в байте
 r.BitU16(offset, bit)      bool   // бит в uint16 LE
 ```
 
-## Пример: RadioMaster TX12
+## Пример: Монитор RadioMaster TX12
 
 ```
-cd examples/tx12
-go run .
+cd examples\tx12
+go run .\tx12_monitor.go
 ```
-
-Смотрите `examples/tx12/main.go` — там TX12-специфичный маппинг байтов,
-структура `JoystickState` и отображение всех каналов в терминале.

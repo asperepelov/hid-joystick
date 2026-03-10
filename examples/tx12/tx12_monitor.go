@@ -61,7 +61,7 @@ func main() {
 	}
 }
 
-const axisMax uint16 = 0xFF07
+const axisMax uint16 = 2047
 
 func bar(val, max uint16, w int) string {
 	b := make([]rune, w)
