@@ -27,10 +27,9 @@ const (
 	offCH7     = 16
 	offCH8     = 18
 
-	// Значения 3-поз переключателей
-	swDOWN uint16 = 0
-	swMID  uint16 = 1024
-	swUP   uint16 = 2047
+	ValMIN uint16 = 0    // Минимальное значение
+	ValMID uint16 = 1024 // Среднее значение
+	ValMAX uint16 = 2047 // Максимальное значение
 
 	// Биты кнопок
 	bitBtn1 = 0 // SA
@@ -78,10 +77,10 @@ type State struct {
 	CH11 uint16
 	CH12 uint16
 
-	Btn1 bool // Buttons offset 0
-	Btn2 bool // Buttons offset 1
-	Btn3 bool // Buttons offset 2
-	Btn4 bool // Buttons offset 3
+	Btn1 bool // Button интерпретация, offset 0
+	Btn2 bool // Button интерпретация, offset 1
+	Btn3 bool // Button интерпретация, offset 2
+	Btn4 bool // Button интерпретация, offset 3
 
 	SW5 SwitchPos // CH5 интерпретирован как 3-поз переключатель
 	SW6 SwitchPos // CH6 интерпретирован как 3-поз переключатель
@@ -105,7 +104,7 @@ func Open() (*TX12, error) {
 	if err != nil {
 		return nil, err
 	}
-	return newTX12(ctrl), nil
+	return NewTX12(ctrl), nil
 }
 
 // WaitForDevice блокирует до появления TX12, проверяя каждые interval.
@@ -114,7 +113,7 @@ func WaitForDevice(interval time.Duration) (*TX12, error) {
 	if err != nil {
 		return nil, err
 	}
-	return newTX12(ctrl), nil
+	return NewTX12(ctrl), nil
 }
 
 // IsAvailable проверяет, подключён ли TX12 прямо сейчас.
@@ -122,7 +121,7 @@ func IsAvailable() bool {
 	return hidjoystick.IsAvailable(Keywords)
 }
 
-func newTX12(ctrl *hidjoystick.Controller) *TX12 {
+func NewTX12(ctrl *hidjoystick.Controller) *TX12 {
 	return &TX12{
 		ctrl:    ctrl,
 		stateCh: make(chan State, 16),
@@ -252,9 +251,9 @@ func parseReport(r hidjoystick.Report) (State, bool) {
 }
 
 func valToSwitch(v uint16) SwitchPos {
-	dUp := absDiff(v, swUP)
-	dMid := absDiff(v, swMID)
-	dDown := absDiff(v, swDOWN)
+	dUp := absDiff(v, ValMAX)
+	dMid := absDiff(v, ValMID)
+	dDown := absDiff(v, ValMIN)
 	if dUp <= dMid && dUp <= dDown {
 		return SwitchUp
 	}
