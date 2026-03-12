@@ -104,7 +104,7 @@ func Open() (*TX12, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewTX12(ctrl), nil
+	return newTX12(ctrl), nil
 }
 
 // WaitForDevice блокирует до появления TX12, проверяя каждые interval.
@@ -113,7 +113,7 @@ func WaitForDevice(interval time.Duration) (*TX12, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewTX12(ctrl), nil
+	return newTX12(ctrl), nil
 }
 
 // IsAvailable проверяет, подключён ли TX12 прямо сейчас.
@@ -121,7 +121,7 @@ func IsAvailable() bool {
 	return hidjoystick.IsAvailable(Keywords)
 }
 
-func NewTX12(ctrl *hidjoystick.Controller) *TX12 {
+func newTX12(ctrl *hidjoystick.Controller) *TX12 {
 	return &TX12{
 		ctrl:    ctrl,
 		stateCh: make(chan State, 16),
