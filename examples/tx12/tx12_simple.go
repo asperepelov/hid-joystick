@@ -13,6 +13,7 @@ import (
 )
 
 func main() {
+	fmt.Printf("Wait for TX12...\n")
 	ctrl, err := tx12.WaitForDevice(time.Second)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -30,7 +31,7 @@ func main() {
 	ticker := time.NewTicker(50 * time.Millisecond)
 	defer ticker.Stop()
 
-	var last tx12.State
+	var last *tx12.State
 	var ready bool
 
 	for {
@@ -41,6 +42,9 @@ func main() {
 		case s := <-ctrl.States():
 			last = s
 			ready = true
+		case e := <-ctrl.Errors():
+			fmt.Printf("\nError TX12: %v\n", e)
+			return
 		case <-ticker.C:
 			if !ready {
 				continue

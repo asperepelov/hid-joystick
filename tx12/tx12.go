@@ -42,7 +42,7 @@ const (
 )
 
 // SwitchPos — позиция 3-позиционного переключателя.
-type SwitchPos int
+type SwitchPos int8
 
 const (
 	SwitchDown SwitchPos = -1
@@ -93,7 +93,7 @@ type State struct {
 // TX12 управляет подключением и чтением данных с пульта RadioMaster TX12.
 type TX12 struct {
 	ctrl    *hidjoystick.Controller
-	stateCh chan State
+	stateCh chan *State
 	errCh   chan error
 	stopCh  chan struct{}
 }
@@ -124,7 +124,7 @@ func IsAvailable() bool {
 func newTX12(ctrl *hidjoystick.Controller) *TX12 {
 	return &TX12{
 		ctrl:    ctrl,
-		stateCh: make(chan State, 16),
+		stateCh: make(chan *State, 1),
 		errCh:   make(chan error, 1),
 		stopCh:  make(chan struct{}),
 	}
@@ -146,14 +146,15 @@ func (t *TX12) Close() {
 }
 
 // ReadOnce выполняет одно блокирующее чтение и возвращает State.
-func (t *TX12) ReadOnce() (State, error) {
+func (t *TX12) ReadOnce() (*State, error) {
 	r, err := t.ctrl.ReadOnce()
 	if err != nil {
-		return State{}, err
+		return nil, err
 	}
+
 	s, ok := parseReport(r)
 	if !ok {
-		return State{}, nil
+		return nil, nil
 	}
 	return s, nil
 }
@@ -168,9 +169,9 @@ func (t *TX12) Start() {
 			case <-t.stopCh:
 				return
 			case r := <-t.ctrl.Reports():
-				if s, ok := parseReport(r); ok {
+				if state, ok := parseReport(r); ok {
 					select {
-					case t.stateCh <- s:
+					case t.stateCh <- state:
 					default:
 					}
 				}
@@ -185,7 +186,7 @@ func (t *TX12) Start() {
 }
 
 // States возвращает канал состояний устройства.
-func (t *TX12) States() <-chan State {
+func (t *TX12) States() <-chan *State {
 	return t.stateCh
 }
 
@@ -196,8 +197,8 @@ func (t *TX12) Errors() <-chan error {
 
 // Poll возвращает последнее актуальное состояние без блокировки.
 // Удобно использовать в game loop.
-func (t *TX12) Poll() (State, bool) {
-	var last State
+func (t *TX12) Poll() (*State, bool) {
+	var last *State
 	var got bool
 	for {
 		select {
@@ -212,9 +213,9 @@ func (t *TX12) Poll() (State, bool) {
 
 // ── Парсинг ───────────────────────────────────────────────────────────────────
 
-func parseReport(r hidjoystick.Report) (State, bool) {
+func parseReport(r hidjoystick.Report) (*State, bool) {
 	if r.Len() < minReportLen {
-		return State{}, false
+		return nil, false
 	}
 
 	raw := make([]byte, r.Len())
@@ -225,7 +226,7 @@ func parseReport(r hidjoystick.Report) (State, bool) {
 	ch7 := r.U16LE(offCH7)
 	ch8 := r.U16LE(offCH8)
 
-	return State{
+	return &State{
 		CH1: r.U16LE(offCH1),
 		CH2: r.U16LE(offCH2),
 		CH3: r.U16LE(offCH3),

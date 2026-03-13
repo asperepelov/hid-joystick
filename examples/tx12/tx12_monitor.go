@@ -38,7 +38,7 @@ func main() {
 	ticker := time.NewTicker(50 * time.Millisecond)
 	defer ticker.Stop()
 
-	var last tx12.State
+	var last *tx12.State
 	var ready bool
 
 	fmt.Print("\033[2J")
@@ -102,7 +102,7 @@ func btn(v bool) string {
 	return "□ off"
 }
 
-func render(s tx12.State, name string) {
+func render(s *tx12.State, name string) {
 	fmt.Print("\033[H")
 	fmt.Println("╔══════════════════════════════════════════════════════════════╗")
 	fmt.Println("║        RadioMaster TX12  ·  Live Input Monitor               ║")
