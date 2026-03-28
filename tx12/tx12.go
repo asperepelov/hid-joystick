@@ -226,6 +226,28 @@ func parseReport(r hidjoystick.Report) (*State, bool) {
 	ch7 := r.U16LE(offCH7)
 	ch8 := r.U16LE(offCH8)
 
+	btn1 := r.BitU16(offButtons, bitBtn1)
+	btn2 := r.BitU16(offButtons, bitBtn2)
+	btn3 := r.BitU16(offButtons, bitBtn3)
+	btn4 := r.BitU16(offButtons, bitBtn4)
+
+	ch9 := uint16(ValMIN)
+	if btn1 {
+		ch9 = ValMAX
+	}
+	ch10 := uint16(ValMIN)
+	if btn2 {
+		ch10 = ValMAX
+	}
+	ch11 := uint16(ValMIN)
+	if btn3 {
+		ch11 = ValMAX
+	}
+	ch12 := uint16(ValMIN)
+	if btn4 {
+		ch12 = ValMAX
+	}
+
 	return &State{
 		CH1:  r.U16LE(offCH1),
 		CH2:  r.U16LE(offCH2),
@@ -235,15 +257,15 @@ func parseReport(r hidjoystick.Report) (*State, bool) {
 		CH6:  ch6,
 		CH7:  ch7,
 		CH8:  ch8,
-		CH9:  bitBtn1,
-		CH10: bitBtn2,
-		CH11: bitBtn3,
-		CH12: bitBtn4,
+		CH9:  ch9,
+		CH10: ch10,
+		CH11: ch11,
+		CH12: ch12,
 
-		Btn1: r.BitU16(offButtons, bitBtn1),
-		Btn2: r.BitU16(offButtons, bitBtn2),
-		Btn3: r.BitU16(offButtons, bitBtn3),
-		Btn4: r.BitU16(offButtons, bitBtn4),
+		Btn1: btn1,
+		Btn2: btn2,
+		Btn3: btn3,
+		Btn4: btn4,
 
 		SW5: valToSwitch(ch5),
 		SW6: valToSwitch(ch6),
