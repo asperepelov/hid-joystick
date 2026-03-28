@@ -52,8 +52,8 @@ func main() {
 			s := last
 			fmt.Print("\033[H")
 			fmt.Println("── Channels ────────────────────────────")
-			fmt.Printf("  CH1 %5d  CH2 %5d  CH3 %5d  CH4 %5d\n",
-				s.CH1, s.CH2, s.CH3, s.CH4)
+			fmt.Printf("  CH1 %5d  CH2 %5d  CH3 %5d  CH4 %5d  CH5 %5d  CH6 %5d  CH7 %5d  CH8 %5d  CH9 %5d  CH10 %5d  CH11 %5d  CH12 %5d\n",
+				s.CH1, s.CH2, s.CH3, s.CH4, s.CH5, s.CH6, s.CH7, s.CH8, s.CH9, s.CH10, s.CH11, s.CH12)
 			fmt.Println("── Switches ────────────────────────────")
 			fmt.Printf("  CH5 %-4s  CH6 %-4s  CH7 %-4s  CH8 %-4s\n",
 				s.SW5, s.SW6, s.SW7, s.SW8)

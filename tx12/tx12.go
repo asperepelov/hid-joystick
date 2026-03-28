@@ -227,15 +227,18 @@ func parseReport(r hidjoystick.Report) (*State, bool) {
 	ch8 := r.U16LE(offCH8)
 
 	return &State{
-		CH1: r.U16LE(offCH1),
-		CH2: r.U16LE(offCH2),
-		CH3: r.U16LE(offCH3),
-		CH4: r.U16LE(offCH4),
-		CH5: ch5,
-		CH6: ch6,
-		CH7: ch7,
-		CH8: ch8,
-		// CH9..CH12 не передаются в HID-репорте TX12
+		CH1:  r.U16LE(offCH1),
+		CH2:  r.U16LE(offCH2),
+		CH3:  r.U16LE(offCH3),
+		CH4:  r.U16LE(offCH4),
+		CH5:  ch5,
+		CH6:  ch6,
+		CH7:  ch7,
+		CH8:  ch8,
+		CH9:  bitBtn1,
+		CH10: bitBtn2,
+		CH11: bitBtn3,
+		CH12: bitBtn4,
 
 		Btn1: r.BitU16(offButtons, bitBtn1),
 		Btn2: r.BitU16(offButtons, bitBtn2),
