@@ -58,7 +58,7 @@ func main() {
 			fmt.Printf("  CH5 %-4s  CH6 %-4s  CH7 %-4s  CH8 %-4s\n",
 				s.SW5, s.SW6, s.SW7, s.SW8)
 			fmt.Println("── Buttons ─────────────────────────────")
-			fmt.Printf("  Btn1 %v  Btn2 %v  Btn3 %v  Btn4 %v\n",
+			fmt.Printf("  SA %-5v  SD %-5v  S1 %-5v  S2 %-5v\n",
 				s.Btn1, s.Btn2, s.Btn3, s.Btn4)
 			fmt.Println("── Raw ─────────────────────────────────")
 			for i, b := range s.Raw {
