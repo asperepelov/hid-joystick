@@ -161,8 +161,8 @@ func (t *TX12) ReadOnce() (*State, error) {
 
 // Start запускает фоновое чтение.
 // Состояния поступают в States(), ошибки — в Errors().
-func (t *TX12) Start() {
-	t.ctrl.Start()
+func (t *TX12) Start(readInterval time.Duration) {
+	t.ctrl.Start(readInterval)
 	go func() {
 		for {
 			select {

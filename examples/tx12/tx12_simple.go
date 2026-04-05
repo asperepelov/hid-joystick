@@ -22,7 +22,7 @@ func main() {
 	defer ctrl.Close()
 
 	fmt.Printf("Connected: %s\n", ctrl.Info().Name)
-	ctrl.Start()
+	ctrl.Start(50)
 
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)

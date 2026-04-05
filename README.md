@@ -63,7 +63,7 @@ hidjoystick.WaitForDevice(keywords []string, interval time.Duration) (*Controlle
 ### Controller
 
 ```go
-ctrl.Start()                    // запустить фоновое чтение
+ctrl.Start(readInterval)        // запустить фоновое чтение
 ctrl.Reports() <-chan Report    // канал репортов
 ctrl.Errors()  <-chan error     // канал ошибок
 ctrl.Poll() (Report, bool)      // последний репорт без блокировки (для game loop)

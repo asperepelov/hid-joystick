@@ -30,7 +30,7 @@ func main() {
 	fmt.Printf("Подключено: %s  (VID=%04X PID=%04X)\n", info.Name, info.VendorID, info.ProductID)
 	time.Sleep(300 * time.Millisecond)
 
-	ctrl.Start()
+	ctrl.Start(50)
 
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)

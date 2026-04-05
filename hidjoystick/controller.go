@@ -94,7 +94,7 @@ func (c *Controller) ReadOnce() (Report, error) {
 // Start запускает фоновую горутину чтения репортов.
 // Репорты поступают в канал Reports(), ошибки — в Errors().
 // Вызовите Close() чтобы остановить.
-func (c *Controller) Start() {
+func (c *Controller) Start(readInterval time.Duration) {
 	go func() {
 		buf := make([]byte, 64)
 		for {
@@ -111,7 +111,7 @@ func (c *Controller) Start() {
 				case c.errCh <- fmt.Errorf("hidjoystick: read: %w", err):
 				default:
 				}
-				time.Sleep(50 * time.Millisecond)
+				time.Sleep(readInterval)
 				continue
 			}
 
